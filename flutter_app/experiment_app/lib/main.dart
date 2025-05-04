@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'course.dart'; // Import the CoursePage
+import 'view_all_screen.dart';
 
 void main() => runApp(const MyApp());
 
@@ -50,12 +51,14 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: theme.colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: navigationItems[currentPageIndex].buildPage(context, this),
+      body: SafeArea(
+        child: navigationItems[currentPageIndex].buildPage(context, this),
+      ),
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
         notchMargin: 6.0,
         child: SizedBox(
-          height: 60.0,
+          height: 56.0,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: navigationItems.map((item) {
@@ -79,6 +82,8 @@ class _MyHomePageState extends State<MyHomePage> {
       double height = 100,
       String? label,
       IconData? icon}) {
+    bool isWideCard = width == double.infinity;
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -87,42 +92,166 @@ class _MyHomePageState extends State<MyHomePage> {
         );
       },
       child: Card(
-        elevation: 3.0,
+        elevation: 4.0,
+        margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(15),
         ),
         child: Container(
           width: width,
           height: height,
-          margin: const EdgeInsets.symmetric(horizontal: 5),
           decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(10),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
           ),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (icon != null)
-                  Icon(
-                    icon,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                if (label != null)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Text(
-                      label,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
+          child: isWideCard
+              ? Row(
+                  children: [
+                    // Image section for wide card
+                    Container(
+                      width: 100,
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(15),
+                          bottomLeft: Radius.circular(15),
+                        ),
+                        image: DecorationImage(
+                          image: NetworkImage('https://picsum.photos/200'),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
-                  ),
-              ],
-            ),
-          ),
+                    // Content section for wide card
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    label ?? 'Investment Plan',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  const Row(
+                                    children: [
+                                      Icon(Icons.star,
+                                          color: Colors.amber, size: 16),
+                                      Text(' 4.5',
+                                          style: TextStyle(fontSize: 12)),
+                                      Text(' • ',
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.grey)),
+                                      Text('1,234 enrolled',
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.grey)),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  '₹399',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.blue,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                Text(
+                                  '6 months',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Image section for regular card
+                    Expanded(
+                      flex: 3,
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(15),
+                            topRight: Radius.circular(15),
+                          ),
+                          image: DecorationImage(
+                            image: NetworkImage('https://picsum.photos/200'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
+                    // Content section for regular card
+                    Expanded(
+                      flex: 2,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              label ?? 'Financial Course',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(Icons.star,
+                                        color: Colors.amber, size: 16),
+                                    Text(' 4.5',
+                                        style: TextStyle(fontSize: 12)),
+                                  ],
+                                ),
+                                Text(
+                                  '₹399',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
         ),
       ),
     );
@@ -136,6 +265,23 @@ abstract class NavigationItem {
 }
 
 class HomeNavigationItem extends NavigationItem {
+  final List<Map<String, String>> recommendedCourses = [
+    {'title': 'Introduction to Stock Market', 'price': '₹399', 'image': 'https://picsum.photos/200'},
+    {'title': 'Personal Finance Basics', 'price': '₹399', 'image': 'https://picsum.photos/200'},
+    {'title': 'Cryptocurrency Trading', 'price': '₹399', 'image': 'https://picsum.photos/200'},
+    {'title': 'Investment Strategies', 'price': '₹399', 'image': 'https://picsum.photos/200'},
+    {'title': 'Real Estate Investment', 'price': '₹399', 'image': 'https://picsum.photos/200'},
+    {'title': 'Retirement Planning', 'price': '₹399', 'image': 'https://picsum.photos/200'},
+  ];
+
+  final List<Map<String, String>> popularCourses = [
+    {'title': 'Budgeting 101', 'price': '₹399', 'image': 'https://picsum.photos/200'},
+    {'title': 'Saving Strategies', 'price': '₹399', 'image': 'https://picsum.photos/200'},
+    {'title': 'Debt Management', 'price': '₹399', 'image': 'https://picsum.photos/200'},
+    {'title': 'Tax Planning', 'price': '₹399', 'image': 'https://picsum.photos/200'},
+    {'title': 'Emergency Fund', 'price': '₹399', 'image': 'https://picsum.photos/200'},
+  ];
+
   @override
   IconData get icon => Icons.home;
 
@@ -163,7 +309,15 @@ class HomeNavigationItem extends NavigationItem {
                 ),
                 TextButton(
                   onPressed: () {
-                    // Handle view all action
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ViewAllScreen(
+                          title: 'Recommended Courses',
+                          items: recommendedCourses,
+                        ),
+                      ),
+                    );
                   },
                   child: const Text(
                     'View All',
@@ -181,12 +335,18 @@ class HomeNavigationItem extends NavigationItem {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
-                  state._buildColoredCard(Colors.black, width: 240),
-                  state._buildColoredCard(Colors.black, width: 240),
-                  state._buildColoredCard(Colors.black, width: 240),
-                  state._buildColoredCard(Colors.black, width: 240),
-                  state._buildColoredCard(Colors.black, width: 240),
-                  state._buildColoredCard(Colors.black, width: 240),
+                  state._buildColoredCard(Colors.black,
+                      width: 240, label: 'Introduction to Stock Market'),
+                  state._buildColoredCard(Colors.black,
+                      width: 240, label: 'Personal Finance Basics'),
+                  state._buildColoredCard(Colors.black,
+                      width: 240, label: 'Cryptocurrency Trading'),
+                  state._buildColoredCard(Colors.black,
+                      width: 240, label: 'Investment Strategies'),
+                  state._buildColoredCard(Colors.black,
+                      width: 240, label: 'Real Estate Investment'),
+                  state._buildColoredCard(Colors.black,
+                      width: 240, label: 'Retirement Planning'),
                 ],
               ),
             ),
@@ -206,7 +366,15 @@ class HomeNavigationItem extends NavigationItem {
                 ),
                 TextButton(
                   onPressed: () {
-                    // Handle view all action
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ViewAllScreen(
+                          title: 'Popular Courses',
+                          items: popularCourses,
+                        ),
+                      ),
+                    );
                   },
                   child: const Text(
                     'View All',
@@ -226,11 +394,16 @@ class HomeNavigationItem extends NavigationItem {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
-                  state._buildColoredCard(Colors.black, width: 165),
-                  state._buildColoredCard(Colors.black, width: 165),
-                  state._buildColoredCard(Colors.black, width: 165),
-                  state._buildColoredCard(Colors.black, width: 165),
-                  state._buildColoredCard(Colors.black, width: 165),
+                  state._buildColoredCard(Colors.black,
+                      width: 165, label: 'Budgeting 101'),
+                  state._buildColoredCard(Colors.black,
+                      width: 165, label: 'Saving Strategies'),
+                  state._buildColoredCard(Colors.black,
+                      width: 165, label: 'Debt Management'),
+                  state._buildColoredCard(Colors.black,
+                      width: 165, label: 'Tax Planning'),
+                  state._buildColoredCard(Colors.black,
+                      width: 165, label: 'Emergency Fund'),
                 ],
               ),
             ),
@@ -249,11 +422,16 @@ class HomeNavigationItem extends NavigationItem {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
-                  state._buildColoredCard(Colors.black, width: 165),
-                  state._buildColoredCard(Colors.black, width: 165),
-                  state._buildColoredCard(Colors.black, width: 165),
-                  state._buildColoredCard(Colors.black, width: 165),
-                  state._buildColoredCard(Colors.black, width: 165),
+                  state._buildColoredCard(Colors.black,
+                      width: 165, label: 'Mutual Funds'),
+                  state._buildColoredCard(Colors.black,
+                      width: 165, label: 'Bond Investment'),
+                  state._buildColoredCard(Colors.black,
+                      width: 165, label: 'Portfolio Management'),
+                  state._buildColoredCard(Colors.black,
+                      width: 165, label: 'Risk Assessment'),
+                  state._buildColoredCard(Colors.black,
+                      width: 165, label: 'Market Analysis'),
                 ],
               ),
             ),
@@ -268,15 +446,20 @@ class HomeNavigationItem extends NavigationItem {
             ),
             const SizedBox(height: 10),
             SizedBox(
-              height: 150,
+              height: 145,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
-                  state._buildColoredCard(Colors.black, width: 165),
-                  state._buildColoredCard(Colors.black, width: 165),
-                  state._buildColoredCard(Colors.black, width: 165),
-                  state._buildColoredCard(Colors.black, width: 165),
-                  state._buildColoredCard(Colors.black, width: 165),
+                  state._buildColoredCard(Colors.black,
+                      width: 165, label: 'Financial Planning'),
+                  state._buildColoredCard(Colors.black,
+                      width: 165, label: 'Wealth Building'),
+                  state._buildColoredCard(Colors.black,
+                      width: 165, label: 'Estate Planning'),
+                  state._buildColoredCard(Colors.black,
+                      width: 165, label: 'Insurance Basics'),
+                  state._buildColoredCard(Colors.black,
+                      width: 165, label: 'Credit Score'),
                 ],
               ),
             ),
@@ -291,11 +474,20 @@ class HomeNavigationItem extends NavigationItem {
             ),
             const SizedBox(height: 10),
             SizedBox(
-              height: 150,
+              height: 145,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
-                  state._buildColoredCard(Colors.black, width: 165),
+                  state._buildColoredCard(Colors.black,
+                      width: 165, label: 'Premium Investment Plan'),
+                  state._buildColoredCard(Colors.black,
+                      width: 165, label: 'Gold Investment Plan'),
+                  state._buildColoredCard(Colors.black,
+                      width: 165, label: 'Retirement Fund Plan'),
+                  state._buildColoredCard(Colors.black,
+                      width: 165, label: 'Child Education Plan'),
+                  state._buildColoredCard(Colors.black,
+                      width: 165, label: 'Tax Saving Plan'),
                 ],
               ),
             ),
@@ -308,6 +500,22 @@ class HomeNavigationItem extends NavigationItem {
 
 // investment plan and opperunity
 class CoinNavigationItem extends NavigationItem {
+  final List<Map<String, String>> popularPlans = [
+    {'title': 'Premium Investment Plan', 'price': '₹1,999', 'image': 'https://picsum.photos/200'},
+    {'title': 'Gold Investment Plan', 'price': '₹1,999', 'image': 'https://picsum.photos/200'},
+    {'title': 'Retirement Fund Plan', 'price': '₹1,999', 'image': 'https://picsum.photos/200'},
+    {'title': 'Child Education Plan', 'price': '₹1,999', 'image': 'https://picsum.photos/200'},
+    {'title': 'Tax Saving Plan', 'price': '₹1,999', 'image': 'https://picsum.photos/200'},
+  ];
+
+  final List<Map<String, String>> recommendedPlans = [
+    {'title': 'Mutual Funds', 'price': '₹399', 'image': 'https://picsum.photos/200'},
+    {'title': 'Bond Investment', 'price': '₹399', 'image': 'https://picsum.photos/200'},
+    {'title': 'Portfolio Management', 'price': '₹399', 'image': 'https://picsum.photos/200'},
+    {'title': 'Risk Assessment', 'price': '₹399', 'image': 'https://picsum.photos/200'},
+    {'title': 'Market Analysis', 'price': '₹399', 'image': 'https://picsum.photos/200'},
+  ];
+
   @override
   IconData get icon => Icons.monetization_on;
 
@@ -320,48 +528,29 @@ class CoinNavigationItem extends NavigationItem {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 15),
-            const Text(
-              'Popular Plans',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Column(
-              children: <Widget>[
-                state._buildColoredCard(Colors.black,
-                    width: double.infinity, height: 100),
-                const SizedBox(height: 10),
-                state._buildColoredCard(Colors.black,
-                    width: double.infinity, height: 100),
-                const SizedBox(height: 10),
-                state._buildColoredCard(Colors.black,
-                    width: double.infinity, height: 100),
-                const SizedBox(height: 10),
-                state._buildColoredCard(Colors.black,
-                    width: double.infinity, height: 100),
-                const SizedBox(height: 10),
-                state._buildColoredCard(Colors.black,
-                    width: double.infinity, height: 100),
-              ],
-            ),
-            const SizedBox(
-              height: 50,
-            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
-                  'You might like these',
+                  'Popular Plans',
                   style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ViewAllScreen(
+                          title: 'Popular Plans',
+                          items: popularPlans,
+                        ),
+                      ),
+                    );
+                  },
                   child: const Text(
                     'View All',
                     style: TextStyle(
@@ -373,16 +562,77 @@ class CoinNavigationItem extends NavigationItem {
               ],
             ),
             const SizedBox(height: 10),
+            Column(
+              children: <Widget>[
+                state._buildColoredCard(Colors.black,
+                    width: double.infinity, height: 95, label: 'Premium Investment Plan'),
+                const SizedBox(height: 8),
+                state._buildColoredCard(Colors.black,
+                    width: double.infinity, height: 95, label: 'Gold Investment Plan'),
+                const SizedBox(height: 8),
+                state._buildColoredCard(Colors.black,
+                    width: double.infinity, height: 95, label: 'Retirement Fund Plan'),
+                const SizedBox(height: 8),
+                state._buildColoredCard(Colors.black,
+                    width: double.infinity, height: 95, label: 'Child Education Plan'),
+                const SizedBox(height: 8),
+                state._buildColoredCard(Colors.black,
+                    width: double.infinity, height: 95, label: 'Tax Saving Plan'),
+              ],
+            ),
+            const SizedBox(
+              height: 50,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Recommended for you',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ViewAllScreen(
+                          title: 'Recommended Plans',
+                          items: recommendedPlans,
+                        ),
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    'View All',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
             SizedBox(
               height: 150,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
-                  state._buildColoredCard(Colors.black, width: 150),
-                  state._buildColoredCard(Colors.black, width: 150),
-                  state._buildColoredCard(Colors.black, width: 150),
-                  state._buildColoredCard(Colors.black, width: 150),
-                  state._buildColoredCard(Colors.black, width: 150),
+                  state._buildColoredCard(Colors.black,
+                      width: 150, label: 'Investment Strategies'),
+                  state._buildColoredCard(Colors.black,
+                      width: 150, label: 'Real Estate Investment'),
+                  state._buildColoredCard(Colors.black,
+                      width: 150, label: 'Retirement Planning'),
+                  state._buildColoredCard(Colors.black,
+                      width: 150, label: 'Tax Planning'),
+                  state._buildColoredCard(Colors.black,
+                      width: 150, label: 'Emergency Fund'),
                 ],
               ),
             ),
@@ -417,11 +667,16 @@ class CoinNavigationItem extends NavigationItem {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
-                  state._buildColoredCard(Colors.black, width: 150),
-                  state._buildColoredCard(Colors.black, width: 150),
-                  state._buildColoredCard(Colors.black, width: 150),
-                  state._buildColoredCard(Colors.black, width: 150),
-                  state._buildColoredCard(Colors.black, width: 150),
+                  state._buildColoredCard(Colors.black,
+                      width: 150, label: 'Mutual Funds'),
+                  state._buildColoredCard(Colors.black,
+                      width: 150, label: 'Bond Investment'),
+                  state._buildColoredCard(Colors.black,
+                      width: 150, label: 'Portfolio Management'),
+                  state._buildColoredCard(Colors.black,
+                      width: 150, label: 'Risk Assessment'),
+                  state._buildColoredCard(Colors.black,
+                      width: 150, label: 'Market Analysis'),
                 ],
               ),
             )
