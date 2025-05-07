@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'course.dart'; // Import the CoursePage
 import 'view_all_screen.dart';
+import 'splash_screen.dart';
 
 void main() => runApp(const MyApp());
 
@@ -13,11 +14,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'CashCraft',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlueAccent),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'CashCraft'),
+      home: const SplashScreen(),
     );
   }
 }
@@ -78,10 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _buildColoredCard(Color color,
-      {double width = 100,
-      double height = 100,
-      String? label,
-      IconData? icon}) {
+      {double width = 100, double height = 100, String? label}) {
     bool isWideCard = width == double.infinity;
 
     return GestureDetector(
@@ -137,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     label ?? 'Investment Plan',
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 16,
+                                      fontSize: 14,
                                     ),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
@@ -170,7 +169,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   '₹399',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.blue,
+                                    color: Colors.black,
                                     fontSize: 16,
                                   ),
                                 ),
@@ -241,7 +240,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   '₹399',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.blue,
+                                    color: Colors.black,
                                   ),
                                 ),
                               ],
@@ -266,28 +265,70 @@ abstract class NavigationItem {
 
 class HomeNavigationItem extends NavigationItem {
   final List<Map<String, String>> recommendedCourses = [
-    {'title': 'Introduction to Stock Market', 'price': '₹399', 'image': 'https://picsum.photos/200'},
-    {'title': 'Personal Finance Basics', 'price': '₹399', 'image': 'https://picsum.photos/200'},
-    {'title': 'Cryptocurrency Trading', 'price': '₹399', 'image': 'https://picsum.photos/200'},
-    {'title': 'Investment Strategies', 'price': '₹399', 'image': 'https://picsum.photos/200'},
-    {'title': 'Real Estate Investment', 'price': '₹399', 'image': 'https://picsum.photos/200'},
-    {'title': 'Retirement Planning', 'price': '₹399', 'image': 'https://picsum.photos/200'},
+    {
+      'title': 'Introduction to Stock Market',
+      'price': '₹399',
+      'image': 'https://picsum.photos/200'
+    },
+    {
+      'title': 'Personal Finance Basics',
+      'price': '₹399',
+      'image': 'https://picsum.photos/200'
+    },
+    {
+      'title': 'Cryptocurrency Trading',
+      'price': '₹399',
+      'image': 'https://picsum.photos/200'
+    },
+    {
+      'title': 'Investment Strategies',
+      'price': '₹399',
+      'image': 'https://picsum.photos/200'
+    },
+    {
+      'title': 'Real Estate Investment',
+      'price': '₹399',
+      'image': 'https://picsum.photos/200'
+    },
+    {
+      'title': 'Retirement Planning',
+      'price': '₹399',
+      'image': 'https://picsum.photos/200'
+    },
   ];
 
   final List<Map<String, String>> popularCourses = [
-    {'title': 'Budgeting 101', 'price': '₹399', 'image': 'https://picsum.photos/200'},
-    {'title': 'Saving Strategies', 'price': '₹399', 'image': 'https://picsum.photos/200'},
-    {'title': 'Debt Management', 'price': '₹399', 'image': 'https://picsum.photos/200'},
-    {'title': 'Tax Planning', 'price': '₹399', 'image': 'https://picsum.photos/200'},
-    {'title': 'Emergency Fund', 'price': '₹399', 'image': 'https://picsum.photos/200'},
+    {
+      'title': 'Budgeting 101',
+      'price': '₹399',
+      'image': 'https://picsum.photos/200'
+    },
+    {
+      'title': 'Saving Strategies',
+      'price': '₹399',
+      'image': 'https://picsum.photos/200'
+    },
+    {
+      'title': 'Debt Management',
+      'price': '₹399',
+      'image': 'https://picsum.photos/200'
+    },
+    {
+      'title': 'Tax Planning',
+      'price': '₹399',
+      'image': 'https://picsum.photos/200'
+    },
+    {
+      'title': 'Emergency Fund',
+      'price': '₹399',
+      'image': 'https://picsum.photos/200'
+    },
   ];
 
   @override
   IconData get icon => Icons.home;
 
   @override
-  // ignore: duplicate_ignore
-  // ignore: library_private_types_in_public_api
   Widget buildPage(BuildContext context, _MyHomePageState state) {
     return SingleChildScrollView(
       child: Padding(
@@ -501,19 +542,59 @@ class HomeNavigationItem extends NavigationItem {
 // investment plan and opperunity
 class CoinNavigationItem extends NavigationItem {
   final List<Map<String, String>> popularPlans = [
-    {'title': 'Premium Investment Plan', 'price': '₹1,999', 'image': 'https://picsum.photos/200'},
-    {'title': 'Gold Investment Plan', 'price': '₹1,999', 'image': 'https://picsum.photos/200'},
-    {'title': 'Retirement Fund Plan', 'price': '₹1,999', 'image': 'https://picsum.photos/200'},
-    {'title': 'Child Education Plan', 'price': '₹1,999', 'image': 'https://picsum.photos/200'},
-    {'title': 'Tax Saving Plan', 'price': '₹1,999', 'image': 'https://picsum.photos/200'},
+    {
+      'title': 'Premium Investment Plan',
+      'price': '₹1,999',
+      'image': 'https://picsum.photos/200'
+    },
+    {
+      'title': 'Gold Investment Plan',
+      'price': '₹1,999',
+      'image': 'https://picsum.photos/200'
+    },
+    {
+      'title': 'Retirement Fund Plan',
+      'price': '₹1,999',
+      'image': 'https://picsum.photos/200'
+    },
+    {
+      'title': 'Child Education Plan',
+      'price': '₹1,999',
+      'image': 'https://picsum.photos/200'
+    },
+    {
+      'title': 'Tax Saving Plan',
+      'price': '₹1,999',
+      'image': 'https://picsum.photos/200'
+    },
   ];
 
   final List<Map<String, String>> recommendedPlans = [
-    {'title': 'Mutual Funds', 'price': '₹399', 'image': 'https://picsum.photos/200'},
-    {'title': 'Bond Investment', 'price': '₹399', 'image': 'https://picsum.photos/200'},
-    {'title': 'Portfolio Management', 'price': '₹399', 'image': 'https://picsum.photos/200'},
-    {'title': 'Risk Assessment', 'price': '₹399', 'image': 'https://picsum.photos/200'},
-    {'title': 'Market Analysis', 'price': '₹399', 'image': 'https://picsum.photos/200'},
+    {
+      'title': 'Mutual Funds',
+      'price': '₹399',
+      'image': 'https://picsum.photos/200'
+    },
+    {
+      'title': 'Bond Investment',
+      'price': '₹399',
+      'image': 'https://picsum.photos/200'
+    },
+    {
+      'title': 'Portfolio Management',
+      'price': '₹399',
+      'image': 'https://picsum.photos/200'
+    },
+    {
+      'title': 'Risk Assessment',
+      'price': '₹399',
+      'image': 'https://picsum.photos/200'
+    },
+    {
+      'title': 'Market Analysis',
+      'price': '₹399',
+      'image': 'https://picsum.photos/200'
+    },
   ];
 
   @override
@@ -565,19 +646,29 @@ class CoinNavigationItem extends NavigationItem {
             Column(
               children: <Widget>[
                 state._buildColoredCard(Colors.black,
-                    width: double.infinity, height: 95, label: 'Premium Investment Plan'),
+                    width: double.infinity,
+                    height: 95,
+                    label: 'Premium Investment Plan'),
                 const SizedBox(height: 8),
                 state._buildColoredCard(Colors.black,
-                    width: double.infinity, height: 95, label: 'Gold Investment Plan'),
+                    width: double.infinity,
+                    height: 95,
+                    label: 'Gold Investment Plan'),
                 const SizedBox(height: 8),
                 state._buildColoredCard(Colors.black,
-                    width: double.infinity, height: 95, label: 'Retirement Fund Plan'),
+                    width: double.infinity,
+                    height: 95,
+                    label: 'Retirement Fund Plan'),
                 const SizedBox(height: 8),
                 state._buildColoredCard(Colors.black,
-                    width: double.infinity, height: 95, label: 'Child Education Plan'),
+                    width: double.infinity,
+                    height: 95,
+                    label: 'Child Education Plan'),
                 const SizedBox(height: 8),
                 state._buildColoredCard(Colors.black,
-                    width: double.infinity, height: 95, label: 'Tax Saving Plan'),
+                    width: double.infinity,
+                    height: 95,
+                    label: 'Tax Saving Plan'),
               ],
             ),
             const SizedBox(
